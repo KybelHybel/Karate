@@ -8,16 +8,18 @@ namespace DesktopApp.Forms
 {
     public partial class AddTrener : Form
     {
-        private Trener trener;
+        private readonly Trener _trener;
         private readonly ITrener _itrener;
         private readonly TrenerDomain _trenerDomain;
         public AddTrener(Trener trener, ITrener itrener)
         {
             InitializeComponent();
+
             _itrener = itrener;
             _trenerDomain = new TrenerDomain(_itrener);
 
-            trener = LoadTrener(trener);
+            _trener = LoadTrener(trener);
+
             tb_id.Text = trener.ID_Trenera.ToString();
             tb_jmeno.Text = trener.Jmeno;
             tb_prijmeni.Text = trener.Prijmeni;
@@ -27,12 +29,14 @@ namespace DesktopApp.Forms
 
         private Trener LoadTrener(Trener trener)
         {
-            Trener tempTrener = new Trener();
-            tempTrener.ID_Trenera = trener.ID_Trenera;
-            tempTrener.Jmeno = trener.Jmeno;
-            tempTrener.Prijmeni = trener.Prijmeni;
-            tempTrener.Pohlavi = trener.Pohlavi;
-            tempTrener.Datum_narozeni = trener.Datum_narozeni;
+            Trener tempTrener = new Trener
+            {
+                ID_Trenera = trener.ID_Trenera,
+                Jmeno = trener.Jmeno,
+                Prijmeni = trener.Prijmeni,
+                Pohlavi = trener.Pohlavi,
+                Datum_narozeni = trener.Datum_narozeni
+            };
 
             return tempTrener;
         }
@@ -47,18 +51,18 @@ namespace DesktopApp.Forms
 
         private void button1_Click(object sender, EventArgs e)
         {
-            trener = new Trener();
             if (!ValidateInput())
             {
                 MessageBox.Show(@"Bad args");
                 return;
             }
-            trener.Jmeno = tb_jmeno.Text;
-            trener.Prijmeni = tb_prijmeni.Text;
-            trener.Pohlavi = tb_pohlavi.Text;
-            trener.Datum_narozeni = dtp_datum.Value;
-            trener.Heslo = "12345";
-            _trenerDomain.InsertTrener(trener);
+
+            _trener.Jmeno = tb_jmeno.Text;
+            _trener.Prijmeni = tb_prijmeni.Text;
+            _trener.Pohlavi = tb_pohlavi.Text;
+            _trener.Datum_narozeni = dtp_datum.Value;
+            _trener.Heslo = "12345";
+            _trenerDomain.InsertTrener(_trener);
             DialogResult = DialogResult.OK;
         }
     }
